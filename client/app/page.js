@@ -1,22 +1,23 @@
-"use client"
+async function getData() {
+  const res = await fetch("http://localhost:4000/");
 
-import Image from "next/image";
-import { useEffect } from "react";
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
 
-export default function Home() {
+  console.log(res);
+  return res.json();
+}
 
-  useEffect(() => {
-    fetch("http://localhost:4000/")
-      .then((res) => res.json())
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+export default async function Page() {
+  const data = await getData();
+
+  console.log(data);
 
   return (
-    <main className="">
-      <p>TEST</p>
+    <main>
+      <h2>Main Page</h2>
+      <p>{data?.message}</p>
     </main>
   );
 }
